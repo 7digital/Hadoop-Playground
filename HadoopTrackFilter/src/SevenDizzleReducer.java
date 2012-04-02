@@ -16,21 +16,17 @@ public class SevenDizzleReducer extends MapReduceBase implements Reducer<Text, T
 	@Override
 	public void reduce(Text key, Iterator<Text> values, OutputCollector<Text, Text> output, Reporter reporter) throws IOException 
 	{
-		reduceCount++;
+		reduceCount++; // Keep track of how parallelized the reduce operation is
 		
 		try
 		{
 			
-			int i = 0;
 			while (values.hasNext())
 			{
-				if (i >= 10) return;
-				i++;
-				
 				String row = values.next().toString();
 				if (getArtist(row).contains("The"))
 				{
-					output.collect(getKey(row), new Text(row + " reduce: " + reduceCount));
+					output.collect(getKey(row), new Text(row + " reduce: " + reduceCount)); // log for parallelization check
 				}
 			}
 					

@@ -16,15 +16,15 @@ public class SevenDizzleMapper extends MapReduceBase implements Mapper<LongWrita
 		@Override
 		public void map(LongWritable key, Text value, OutputCollector<Text, Text> output, Reporter arg3)throws IOException 
 		{
-			mapCount++;
+			mapCount++; // Make a not of how many times this method is called to observe parallelization
 			
 			try
 			{
-				Scanner s = new Scanner(value.toString());
+				Scanner s = new Scanner(value.toString()); // Value will be some rows from the CSV file
 				while(s.hasNextLine())
 				{
 					String line = s.nextLine();
-					output.collect(getKey(line), new Text(line.substring(0, 100) + " Map: " + mapCount));
+					output.collect(getKey(line), new Text(line.substring(0, 100) + " Map: " + mapCount)); // Note map count ^^^
 				}
 			}
 			catch (Exception ex){}
@@ -32,9 +32,7 @@ public class SevenDizzleMapper extends MapReduceBase implements Mapper<LongWrita
 
 			private Text getKey(String line) 
 			{
-				//return new Text(line.split("¬")[0]);
-				return new Text("1");
-				
+				return new Text(line.split("¬")[0]); // Track Id
 			}
 		
 }
